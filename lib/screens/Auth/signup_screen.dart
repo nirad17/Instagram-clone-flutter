@@ -5,14 +5,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/responsive/mobile_screen_layout.dart';
+import 'package:instagram/responsive/responsive.dart';
+import 'package:instagram/responsive/web_screen_layout.dart';
+import 'package:instagram/screens/Auth/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_input.dart';
 
-bool _isLoading=false;
+bool _isLoading = false;
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
-
+  static String id = 'signup';
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -30,26 +35,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  void signUpUser()  async {
+  void signUpUser() async {
     setState(() {
-      _isLoading=true;
+      _isLoading = true;
     });
     String res = await AuthMethods().signUpUser(
-        email: _emailController.text,
-        password: _passwordController.text,
-        username: _usernameController.text,
-        bio: _bioController.text,
-        file: _img!,
-        );
-    
+      email: _emailController.text,
+      password: _passwordController.text,
+      username: _usernameController.text,
+      bio: _bioController.text,
+      file: _img!,
+    );
+
     setState(() {
-      _isLoading=false;
+      _isLoading = false;
     });
     print(res);
-    if (res!='Success') {
-     showSnackBar(context, res);
+    if (res != 'Success') {
+      showSnackBar(context, res);
+    } else {
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+              mobileScreenLayout: MobileScreenLayout(),
+              webScreenLayout: WebScreenLayout())));
     }
   }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -79,7 +90,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: 64,
             ),
             const SizedBox(
-              height: 64,
+              height: 50,
             ),
             //circular widget to accept and show profile pic
             Stack(
@@ -104,15 +115,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ],
             ),
             const SizedBox(
-              height: 40,
+              height: 30,
             ),
+            //username textfield
+
+            TextFieldInput(
+              hintText: 'Enter username',
+              textEditingController: _usernameController,
+              textInputType: TextInputType.text,
+            ),
+
             //text field email
             TextFieldInput(
                 hintText: 'Enter E-mail',
                 textEditingController: _emailController,
                 textInputType: TextInputType.emailAddress),
             const SizedBox(
-              height: 25,
+              height: 20,
             ),
             //password
             TextFieldInput(
@@ -124,15 +143,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             //button login
             const SizedBox(
-              height: 25,
+              height: 20,
             ),
-            TextFieldInput(
-              hintText: 'Enter username',
-              textEditingController: _usernameController,
-              textInputType: TextInputType.text,
-            ),
+
             const SizedBox(
-              height: 25,
+              height: 20,
             ),
             TextFieldInput(
                 hintText: 'Add Bio',
@@ -140,11 +155,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 textInputType: TextInputType.text),
 
             const SizedBox(
-              height: 35,
+              height: 30,
             ),
             ElevatedButton(
               onPressed: signUpUser,
-              child: _isLoading? CircularProgressIndicator(color: primaryColor,): Text("Sign up"),
+              child: _isLoading
+                  ? CircularProgressIndicator(
+                      color: primaryColor,
+                    )
+                  : Text("Sign up"),
               style: ElevatedButton.styleFrom(
                   fixedSize: const Size(double.maxFinite, 55),
                   padding: const EdgeInsets.symmetric(vertical: 8),
@@ -168,7 +187,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, LoginScreen.id);
+                      },
                       child: Text(
                         "Login",
                         style: TextStyle(fontWeight: FontWeight.bold),

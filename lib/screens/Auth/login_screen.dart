@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/responsive/mobile_screen_layout.dart';
+import 'package:instagram/responsive/responsive.dart';
+import 'package:instagram/responsive/web_screen_layout.dart';
+import 'package:instagram/screens/Auth/signup_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_input.dart';
@@ -9,7 +13,7 @@ bool _isLoading = false;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
-
+  static String id='login';
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -32,7 +36,11 @@ class _LoginScreenState extends State<LoginScreen> {
       showSnackBar(context, res);
     } else {
       //go to home screen
-      
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) =>  const ResponsiveLayout(
+                  mobileScreenLayout: MobileScreenLayout(),
+                  webScreenLayout: WebScreenLayout()))
+      );
     }
   }
   @override
@@ -113,7 +121,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacementNamed(SignUpScreen.id);
+                      },
                       child: Text(
                         "Sign Up",
                         style: TextStyle(fontWeight: FontWeight.bold),
