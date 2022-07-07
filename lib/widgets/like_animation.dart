@@ -7,7 +7,7 @@ class LikeAnimation extends StatefulWidget {
   final VoidCallback? onEnd;
   final bool smallLike;
 
-  const LikeAnimation({
+  LikeAnimation({
     Key? key,
     required this.child,
     required this.isAnimating,
@@ -65,6 +65,7 @@ class _LikeAnimationState extends State<LikeAnimation>
   Widget build(BuildContext context) {
     return ScaleTransition(
       scale: scale,
+      child: widget.child,
     );
   }
 }

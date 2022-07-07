@@ -18,14 +18,41 @@ class FirestoreMethods {
   ) async {
     String res = "Some error occured";
     try {
-      String photoUrl= await StorageMethods().uploadImageToStorage('posts', file, true);
-      String postId=const Uuid().v1();
-      Post post=Post(description: description, uid: uid, username: username, postId: postId, datePublished: DateTime.now(), postUrl: photoUrl, profImage: profImage,likes: []);
-      _firestore.collection('posts').doc(postId).set(post.toJson(),);
-      res="Success";
-    } catch(e) {
+      String photoUrl =
+          await StorageMethods().uploadImageToStorage('posts', file, true);
+      String postId = const Uuid().v1();
+      Post post = Post(
+          description: description,
+          uid: uid,
+          username: username,
+          postId: postId,
+          datePublished: DateTime.now(),
+          postUrl: photoUrl,
+          profImage: profImage,
+          likes: []);
+      _firestore.collection('posts').doc(postId).set(
+            post.toJson(),
+          );
+      res = "Success";
+    } catch (e) {
       print("Error");
     }
     return res;
+  }
+
+  Future<void> likePost(String postId, String uid, List likes) async {
+    try {
+      if (likes.contains(uid)) {
+        await _firestore.collection('posts').doc(postId).update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+      } else {
+       await _firestore.collection('posts').doc(postId).update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
