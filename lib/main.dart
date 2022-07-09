@@ -8,6 +8,7 @@ import 'package:instagram/responsive/responsive.dart';
 import 'package:instagram/responsive/web_screen_layout.dart';
 import 'package:instagram/screens/Auth/login_screen.dart';
 import 'package:instagram/screens/Auth/signup_screen.dart';
+import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:provider/provider.dart';
 
