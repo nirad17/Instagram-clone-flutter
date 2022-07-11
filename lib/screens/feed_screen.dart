@@ -25,13 +25,18 @@ class _FeedScreenState extends State<FeedScreen> {
           width: 115,
         ),
         actions: [
-          IconButton(onPressed: () {
-            FirebaseAuth.instance.signOut();
-          }, icon: Icon(Icons.messenger_outline)),
+          IconButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              icon: Icon(Icons.messenger_outline)),
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('posts')
+            .orderBy('datePublished', descending: true)
+            .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
