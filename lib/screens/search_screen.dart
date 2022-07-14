@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:instagram/screens/profile_screen.dart';
 import 'package:instagram/utils/colors.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -39,6 +40,9 @@ class _SearchScreenState extends State<SearchScreen> {
             // focusColor: primaryColor,
             fillColor: primaryColor,
             icon: Icon(Icons.search),
+            suffix: IconButton(onPressed: () {
+              _searchController.text="";
+            }, icon: Icon(Icons.close, color: Colors.white54,)),
             border: InputBorder.none,
             // OutlineInputBorder(borderSide: Divider.createBorderSide(context)),
           ),
@@ -63,6 +67,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                                uid: snapshot.data!.docs[index]['uid']),
+                          ),
+                        );
+                      },
                       leading: CircleAvatar(
                           backgroundImage: NetworkImage(
                               snapshot.data!.docs[index]['photoURL'])),

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/resources/auth_methods.dart';
+import 'package:instagram/screens/Auth/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/post_card.dart';
 
@@ -27,7 +29,8 @@ class _FeedScreenState extends State<FeedScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                FirebaseAuth.instance.signOut();
+                AuthMethods().signOut();
+                Navigator.of(context).pushReplacementNamed(LoginScreen.id);
               },
               icon: Icon(Icons.messenger_outline)),
         ],
@@ -39,7 +42,7 @@ class _FeedScreenState extends State<FeedScreen> {
             .snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (!snapshot.hasData) {
             return const Center(
               child: CircularProgressIndicator(),
             );

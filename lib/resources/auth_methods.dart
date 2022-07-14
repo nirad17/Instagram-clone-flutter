@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -36,7 +35,7 @@ class AuthMethods {
         //add user to the DB
         model.User user= model.User(
           username :username,
-          uid : cred.user!.uid,
+          uid : cred.user!.uid,//we men are the best
           email : email,
           bio : bio,
           followers : <String>[],
@@ -73,5 +72,11 @@ class AuthMethods {
     }
     return res;
 
+  }
+
+
+
+  Future<void> signOut() async{
+    await _auth.signOut();
   }
 }

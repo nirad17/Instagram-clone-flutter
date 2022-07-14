@@ -62,8 +62,8 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             //insta logo svg
             Flexible(
-              child: Container(),
               flex: 2,
+              child: Container(),
             ),
             SvgPicture.asset(
               'assets/images/ic_instagram.svg',
